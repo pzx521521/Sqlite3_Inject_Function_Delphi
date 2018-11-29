@@ -218,6 +218,7 @@ type
     procedure SetExtEnabled(const Value: Boolean);
 
     procedure SetReadUncommitted(const Value: Boolean);
+
   protected
     procedure SetSynchronised(Value: boolean);
     procedure DoQuery(const value: string);
@@ -379,6 +380,7 @@ type
       /// <param name="AttachedDBName">name of the attached database</param>
       /// <returns>true; attached succesfully</returns>
     {$ENDREGION}
+    function Detach(const AttachedDBName: string): Boolean;
     function Attach(const DBFilename: string; const AttachedDBName: string): Boolean;
     /// <summary>
     /// Format settings to use for DateTime fields
@@ -1714,6 +1716,19 @@ var
 begin
   Result := False;
   stmt := GetPreparedStatement('ATTACH DATABASE ? AS ?', [DBFilename, AttachedDBName]);
+  try
+    Result := stmt.ExecSQL;
+  finally
+    stmt.Free;
+  end;
+end;
+
+function TSQLiteDatabase.Detach(const AttachedDBName: string): Boolean;
+var
+  stmt: TSQLitePreparedStatement;
+begin
+  Result := False;
+  stmt := GetPreparedStatement('DETACH DATABASE ? ', [AttachedDBName]);
   try
     Result := stmt.ExecSQL;
   finally

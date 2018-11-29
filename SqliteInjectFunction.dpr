@@ -1,7 +1,6 @@
 program SqliteInjectFunction;
 
 uses
-  ExceptionLog,
   Forms,
   svSQLite3 in 'SQLLite\svSQLite3.pas',
   svSQLite3Dataset in 'SQLLite\svSQLite3Dataset.pas',
